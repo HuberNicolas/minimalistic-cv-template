@@ -11,7 +11,7 @@ To use this CV template, you have a few options:
 1. Clone this repository to your local machine using the following command:
 
    ```bash
-    git clone https://github.com/HuberNicolas/minimalistic-cv/
+    git clone https://github.com/HuberNicolas/minimalistic-cv-template/
     ```
 
 2. Open the `cv.tex` file in a LaTeX editor of your choice.

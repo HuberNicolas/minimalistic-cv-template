@@ -1,4 +1,4 @@
-# minimalistic-cv
+# minimalistic-cv-template
 
 This is a minimalistic CV template created with LaTeX. [Preview](minimalistic_cv_template.pdf)
 

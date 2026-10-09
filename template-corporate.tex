@@ -1,0 +1,71 @@
+\documentclass[corporate]{cv}
+
+\title{CV}
+\author{John Doe}
+\date{October 2026}
+
+\begin{document}
+
+\cvheader{John Doe}{Software Engineer}
+  {Zurich, Switzerland \cvsep +41 12 345 67 89 \cvsep \email{john.doe@example.com}}
+  {\weblink{linkedin.com/in/johndoe} \cvsep \weblink{github.com/johndoe}}
+
+\section*{Profile}
+Software engineer with four years of experience building web applications in Python and TypeScript. Took a
+customer portal from prototype to 20,000 monthly users; looking for a backend role in a product team.
+
+\section*{Work Experience}
+\begin{table}[H]
+    \begin{tabular}{ll}
+        \dtList{03/2023}{present}{Software Engineer,}{XYZ Web Solutions, Zurich}{%
+            \item Built a customer portal in Django and React that now serves 20,000 users per month
+            \item Cut page load times by 60\,\% by adding caching and moving reports to background jobs
+            \item Introduced automated tests and CI; deployments went from monthly to weekly
+        } \\
+        \dtList{09/2021}{02/2023}{Junior Developer (part-time),}{XYZ Web Solutions, Zurich}{%
+            \item Maintained the in-house CMS and integrated payment and mapping APIs
+        } \\
+        \dtList{07/2020}{12/2020}{Intern,}{Tech Company ABC, Zurich}{%
+            \item Wrote the test suite and user manual for an IoT device configuration tool
+        } \\
+    \end{tabular}
+\end{table}
+
+\section*{Education}
+\begin{table}[H]
+    \begin{tabular}{ll}
+        \dtList{09/2024}{present}{MSc Computer Science,}{University of XYZ (part-time)}{} \\
+        \dtList{09/2019}{08/2023}{BSc Computer Science,}{University of XYZ}{%
+            \item Bachelor's thesis: A Chatbot for Customer Support with Intent Classification (grade 5.5/6)
+        } \\
+    \end{tabular}
+\end{table}
+
+\section*{Skills}
+\begin{table}[H]
+    \begin{tabular}{ll}
+        \skillEntry{Languages}{Python, TypeScript, SQL, Java}
+        \skillEntry{Frameworks}{Django, FastAPI, React, Node.js}
+        \skillEntry{Tools}{Docker, PostgreSQL, Git, GitHub Actions, AWS}
+    \end{tabular}
+\end{table}
+
+\section*{Languages}
+\begin{table}[H]
+    \begin{tabular}{ll}
+        \skillEntry{German}{Native}
+        \skillEntry{English}{Fluent (C1)}
+        \skillEntry{French}{Basic (A2)}
+    \end{tabular}
+\end{table}
+
+\section*{Volunteering}
+\begin{table}[H]
+    \begin{tabular}{ll}
+        \tList{2014}{present}{Junior coach, FC XYZ youth team}{%
+            \item Coach 15 players aged 9--12; plan weekly training sessions and tournaments
+        } \\
+    \end{tabular}
+\end{table}
+
+\end{document}

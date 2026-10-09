@@ -16,22 +16,21 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      - name: Compile template.tex
+      - name: Compile both templates
         uses: xu-cheng/latex-action@v4
         with:
-          root_file: template.tex
+          root_file: |
+            template-academic.tex
+            template-corporate.tex
 
-      - name: Rename PDF
-        run: mv template.pdf minimalistic-cv-template.pdf
-
-      - name: Upload PDF as workflow artifact
+      - name: Upload PDFs as workflow artifact
         uses: actions/upload-artifact@v7
         with:
           name: minimalistic-cv-template
-          path: minimalistic-cv-template.pdf
+          path: template-*.pdf
 
       - name: Attach PDF to the release
         if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v3
         with:
-          files: minimalistic-cv-template.pdf
+          files: template-*.pdf

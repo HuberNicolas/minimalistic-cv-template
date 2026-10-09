@@ -1,96 +1,95 @@
-\NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{cv}[My custom CV class]
+% cv.cls -- a minimalistic CV class
+% https://github.com/HuberNicolas/minimalistic-cv-template
+%
+% Compiles with pdfLaTeX, XeLaTeX and LuaLaTeX (TeX Live 2022 or newer).
+\NeedsTeXFormat{LaTeX2e}[2020/10/01]
+\ProvidesClass{cv}[2026/10/09 v2.0 Minimalistic CV class]
 
-\LoadClass{article} % default article style
+% Pass all class options (e.g. 11pt, letterpaper) on to article
+\DeclareOption*{\PassOptionsToClass{\CurrentOption}{article}}
+\ProcessOptions\relax
+\LoadClass{article}
 
 % packages
-\RequirePackage[a4paper, margin=0.75cm]{geometry} % Adjust page margins
+\RequirePackage{iftex}
+\ifPDFTeX
+  \RequirePackage[T1]{fontenc} % T1 Computer Modern (cm-super) has bold small capitals
+\else
+  \RequirePackage{fontspec}    % XeLaTeX/LuaLaTeX: Latin Modern, Unicode input
+\fi
+\RequirePackage{microtype}
+\RequirePackage[a4paper, margin=0.75cm]{geometry} % page margins
 \RequirePackage{titlesec}
-\RequirePackage{enumitem} % Required for customizing list spacing
-\RequirePackage{float}
-\RequirePackage{hyperref}
+\RequirePackage{enumitem} % list spacing
+\RequirePackage{float}    % [H] placement for the section tables
+\RequirePackage{etoolbox} % \ifblank
+\RequirePackage[hidelinks]{hyperref} % load last
 
+\pagestyle{empty}
 
+% PDF metadata from \author and \title in the document preamble
+\AtBeginDocument{\hypersetup{pdfauthor={\@author}, pdftitle={\@title}}}
 
-% title
-\titleformat{\section}         % Customise the \section command 
-  {\Large\scshape\raggedright} % Make the \section headers large (\Large),
-                               % small capitals (\scshape) and left aligned (\raggedright)
-  {}{0em}                      % Can be used to give a prefix to all sections, like 'Section ...'
-  {}                           % Can be used to insert code before the heading
-  [\titlerule\vspace{-0.7\baselineskip}] % Inserts a horizontal line after the heading and reduces the vertical spacing
+% section headings
+\titleformat{\section}         % Customise the \section command
+  {\Large\scshape\raggedright} % large, small capitals, left aligned
+  {}{0em}                      % no prefix like 'Section ...'
+  {}                           % no code before the heading
+  [\titlerule\vspace{-0.7\baselineskip}] % rule below the heading, reduced spacing
 
 \titlespacing{\section}
-  {0pt} % left spacing
-  {0.5\baselineskip} % vertical spacing before section
-  {0.5\baselineskip} % vertical spacing after section
+  {0pt}               % left spacing
+  {0.5\baselineskip}  % vertical spacing before section
+  {0.5\baselineskip}  % vertical spacing after section
 
-\newcommand{\centeredheader}[5]{ % Define the centeredheader command with four arguments
+% list of entries below an entry title
+\newcommand{\cv@items}[1]{%
+  \begin{itemize}[itemsep=0pt, parsep=0pt, topsep=0pt, leftmargin=*]
+    #1
+  \end{itemize}%
+}
+
+% date column: "start --" over "end"; no dash if the end is empty
+\newcommand{\cv@dates}[2]{%
+  \begin{tabular}[t]{@{}l@{}}
+    #1\ifblank{#2}{}{ --} \\ #2
+  \end{tabular}%
+}
+
+% \centeredheader{name}{subtitle}{phone}{email}{website}
+\newcommand{\centeredheader}[5]{%
   \begin{center}
-  \huge\scshape \textbf{#1} \\
-  \large #2 \\
-  \ #3 \textbar{} \href{mailto:#4}{\textnormal{\texttt{#4}}} \\
-  \small \href{#5}{\textnormal{#5}}
+    {\huge\scshape\bfseries #1} \\
+    {\large\scshape #2} \\
+    #3 \textbar{} \href{mailto:#4}{\texttt{#4}} \\
+    {\small \href{#5}{#5}}
   \end{center}
 }
 
-% double title list
+% double title list: \dtList{start}{end}{bold title}{text}{\item ... \item ...}
+% Leave the last argument empty for an entry without items.
 \newcommand{\dtList}[5]{%
-    \begin{tabular}[t]{@{}l@{}}
-        #1 -- \\ #2
-    \end{tabular} & 
-    \begin{tabular}[t]{@{}p{0.9\linewidth}@{}} % Length is set by 0.9\linewidth
-        \textbf{#3} #4 \\
-        \vspace{-\topsep} % Reduce the vertical space above the itemize environment
-        \ifx#5\empty % Check if the fifth parameter is empty
-            % No items provided
-        \else
-            \begin{itemize}[itemsep=0pt, parsep=0pt, topsep=0pt, leftmargin=*] % Customize the itemize environment with reduced spacing
-                #5
-            \end{itemize}
-        \fi
-    \end{tabular}
+  \cv@dates{#1}{#2} &
+  \begin{tabular}[t]{@{}p{0.9\linewidth}@{}}
+    \textbf{#3} #4 \\
+    \ifblank{#5}{}{\vspace{-\topsep}\cv@items{#5}}
+  \end{tabular}%
 }
 
-% title list
+% title list: \tList{start}{end}{bold title}{\item ... \item ...}
 \newcommand{\tList}[4]{%
-    \begin{tabular}[t]{@{}l@{}}
-        #1 -- \\ #2
-    \end{tabular} & 
-    \begin{tabular}[t]{@{}p{0.9\linewidth}@{}} % Length is set by 0.9\linewidth
-        \textbf{#3} \\
-        \vspace{-\topsep} % Reduce the vertical space above the itemize environment
-        \begin{itemize}[itemsep=0pt, parsep=0pt, topsep=0pt, leftmargin=*] % Customize the itemize environment with reduced spacing
-            #4
-        \end{itemize}
-    \end{tabular}
+  \cv@dates{#1}{#2} &
+  \begin{tabular}[t]{@{}p{0.9\linewidth}@{}}
+    \textbf{#3} \\
+    \ifblank{#4}{}{\vspace{-\topsep}\cv@items{#4}}
+  \end{tabular}%
 }
 
-% skill entry
+% skill entry: \skillEntry{skill}{level}
 \newcommand{\skillEntry}[2]{%
-    #1 & #2 \\
+  #1 & #2 \\
 }
 
-
-% Licence
+% License
 % Template created by Nicolas Huber, nicolas.huber.dev@gmail.com
-%
-%    MIT License
-%    
-%    Permission is hereby granted, free of charge, to any person obtaining a copy
-%    of this software and associated documentation files (the "Software"), to deal
-%    in the Software without restriction, including without limitation the rights
-%    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-%    copies of the Software, and to permit persons to whom the Software is
-%    furnished to do so, subject to the following conditions:
-%    
-%    The above copyright notice and this permission notice shall be included in all
-%    copies or substantial portions of the Software.
-%    
-%    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-%    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-%    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-%    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-%    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-%    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-%    SOFTWARE.
+% Released under the MIT License, see the LICENSE file.

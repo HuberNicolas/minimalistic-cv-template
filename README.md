@@ -2,66 +2,82 @@
 
 # minimalistic-cv-template
 
-**A one-column LaTeX CV with small-caps headings and compact, dated entries**
+**A one-column LaTeX CV in two styles: academic and corporate**
 
 ![LaTeX](https://img.shields.io/badge/LaTeX-008080?logo=latex&logoColor=white)
 ![Overleaf](https://img.shields.io/badge/Overleaf-47A141?logo=overleaf&logoColor=white)
 [![Build PDF](https://github.com/HuberNicolas/minimalistic-cv-template/actions/workflows/build.yml/badge.svg)](https://github.com/HuberNicolas/minimalistic-cv-template/actions/workflows/build.yml)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 
-[Preview](#preview) · [Quick start](#quick-start) · [Commands](#commands) · [PDF](https://github.com/HuberNicolas/minimalistic-cv-template/releases/latest)
+[Preview](#preview) · [Quick start](#quick-start) · [Commands](#commands) · [Writing tips](#writing-tips) · [PDF](https://github.com/HuberNicolas/minimalistic-cv-template/releases/latest)
 
 </div>
 
 ## Features
 
-- 📄 Clean one-column layout on A4 with narrow margins
-- 🗓️ Dated entries with a bold title, an optional description and a bullet list
-- 🧩 Four commands cover all sections: `\centeredheader`, `\dtList`, `\tList`, `\skillEntry`
-- 🔤 Real text in the PDF: selectable, searchable and readable by applicant tracking systems
-- ⚙️ Compiles with pdfLaTeX (recommended), XeLaTeX and LuaLaTeX, locally or on Overleaf
-- 🤖 GitHub Actions builds the PDF on every push and attaches it to releases
+- 🎓 **Academic style:** Computer Modern, small-caps headings, dates in a left column; for research, PhD and
+  technical applications
+- 💼 **Corporate style:** Source Sans, accent color, dates right-aligned on the title line; for applications to
+  companies
+- 📄 One column on A4 with 1.5 cm margins, month/year dates, a contact line with location and profile links
+- 🔤 Machine-readable text (real spaces, Unicode mappings), so applicant tracking systems can parse the PDF
+- 🧩 One class, one option: `\documentclass[academic]{cv}` or `\documentclass[corporate]{cv}`
+- 🤖 GitHub Actions builds both PDFs on every push and attaches them to releases
 
 > [!NOTE]
-> Created in 2023 and updated in 2026 (v2): the class now passes options to `article`, handles empty
-> arguments safely, sets PDF metadata and builds in CI. The commands keep their v1 signatures, so existing CVs
-> compile without changes.
+> Created in 2023 and updated in 2026 (v2). v2.1 adds the two styles, the `\cvheader` command, wider margins and
+> machine-readable text. Existing v1 CVs still compile: `\centeredheader` and all entry commands keep their
+> signatures.
 
 ## Contents
 
 - [Preview](#preview)
+- [Which style?](#which-style)
 - [Repository structure](#repository-structure)
 - [Quick start](#quick-start)
 - [Commands](#commands)
 - [Customisation](#customisation)
+- [Writing tips](#writing-tips)
 - [Build in CI](#build-in-ci)
 - [License](#license)
 - [Author](#author)
 
 ## Preview
 
-[![Preview of the first page](docs/preview.png)](https://github.com/HuberNicolas/minimalistic-cv-template/releases/latest)
+| Academic | Corporate |
+|---|---|
+| [![Academic style](docs/preview-academic.png)](template-academic.tex) | [![Corporate style](docs/preview-corporate.png)](template-corporate.tex) |
 
-The full PDF is attached to every [release](https://github.com/HuberNicolas/minimalistic-cv-template/releases) and to
+Both PDFs are attached to every [release](https://github.com/HuberNicolas/minimalistic-cv-template/releases) and to
 each [workflow run](https://github.com/HuberNicolas/minimalistic-cv-template/actions/workflows/build.yml).
+
+## Which style?
+
+| | Academic | Corporate |
+|---|---|---|
+| For | PhD and research positions, technical roles, academia | Companies, HR screening, recruiters |
+| Order of sections | Profile, Education, Research, Publications, Teaching, Skills | Profile, Work experience, Education, Skills |
+| Dates | Left column, start over end | Right-aligned on the title line |
+| Length | Two pages are fine | One page for up to ~5 years of experience |
 
 ## Repository structure
 
 | Path | Content |
 |---|---|
-| [`cv.cls`](cv.cls) | Document class: layout, fonts and the CV commands |
-| [`template.tex`](template.tex) | Example CV with placeholder content |
-| [`.latexmkrc`](.latexmkrc) | latexmk settings (pdfLaTeX, `template.tex` as default file) |
-| [`.github/workflows/build.yml`](.github/workflows/build.yml) | Builds the PDF and attaches it to releases |
-| [`docs/preview.png`](docs/preview.png) | First page of the example, shown above |
+| [`cv.cls`](cv.cls) | Document class: both styles, layout, fonts and the CV commands |
+| [`template-academic.tex`](template-academic.tex) | Example CV in the academic style |
+| [`template-corporate.tex`](template-corporate.tex) | Example CV in the corporate style |
+| [`.latexmkrc`](.latexmkrc) | latexmk settings (pdfLaTeX, both templates as default files) |
+| [`.github/workflows/build.yml`](.github/workflows/build.yml) | Builds both PDFs and attaches them to releases |
+| [`docs/`](docs) | Preview images shown above |
 
 ## Quick start
 
 ### Overleaf
 
-1. Download `cv.cls` and `template.tex` (or the repository as ZIP).
-2. In [Overleaf](https://www.overleaf.com/), choose **New Project → Upload Project** and upload both files (or the ZIP).
-3. Keep the compiler at **pdfLaTeX** (Menu → Settings) and edit `template.tex`.
+1. Download `cv.cls` and one of the templates (or the repository as ZIP).
+2. In [Overleaf](https://www.overleaf.com/), choose **New Project → Upload Project** and upload the files.
+3. Keep the compiler at **pdfLaTeX** (Menu → Settings) and edit the template.
 
 ### Local
 
@@ -74,16 +90,16 @@ You need a TeX distribution with `latexmk`, e.g. [TeX Live](https://tug.org/texl
    git clone git@github.com:HuberNicolas/minimalistic-cv-template.git
    ```
 
-2. Build the PDF (`.latexmkrc` selects pdfLaTeX and `template.tex`):
+2. Build both examples (`.latexmkrc` selects pdfLaTeX):
 
    ```bash
    latexmk
    ```
 
-3. Rebuild on every save while you edit:
+3. Rebuild one file on every save while you edit:
 
    ```bash
-   latexmk -pvc
+   latexmk -pvc template-corporate.tex
    ```
 
 4. Remove the build files:
@@ -92,8 +108,8 @@ You need a TeX distribution with `latexmk`, e.g. [TeX Live](https://tug.org/texl
    latexmk -c
    ```
 
-To build another file, pass its name, e.g. `latexmk cv.tex`. The [`.gitignore`](.gitignore) keeps `cv.tex`,
-`cv-de.tex` and `cv-en.tex` out of Git, so you can keep your own CV next to the template.
+To start your own CV, copy a template to `cv.tex` and build it with `latexmk cv.tex`. The
+[`.gitignore`](.gitignore) keeps `cv.tex`, `cv-de.tex` and `cv-en.tex` out of Git.
 
 ### Docker
 
@@ -103,28 +119,37 @@ Without a local TeX installation, build with the official TeX Live image (severa
 docker run --rm -v "$PWD":/w -w /w texlive/texlive:latest latexmk
 ```
 
-## Commands
+> [!IMPORTANT]
+> Use **pdfLaTeX** for the CV you send out. XeLaTeX and LuaLaTeX also compile, but with Source Sans their PDFs lose
+> the spaces between words when parsed (`Softwareengineerwith…`), which hurts applicant tracking systems.
 
-All commands go inside a two-column `tabular` (`{ll}`), as in [`template.tex`](template.tex).
+## Commands
 
 | Command | Use |
 |---|---|
-| `\centeredheader{name}{subtitle}{phone}{email}{website}` | Centered header with a `mailto:` link and a web link |
+| `\cvheader{name}{subtitle}{contact line}{links line}` | Centered header; separate items with `\cvsep`, leave a line empty to drop it |
+| `\email{address}` | `mailto:` link |
+| `\weblink{github.com/user}` | Link without `https://` in the text |
 | `\dtList{start}{end}{title}{text}{items}` | Entry with a bold title, normal text after it and bullet items |
 | `\tList{start}{end}{title}{items}` | Entry with a bold title and bullet items |
-| `\skillEntry{skill}{level}` | One row of a skill or language table |
+| `\skillEntry{label}{value}` | One row of a skill or language table |
+| `\centeredheader{name}{subtitle}{phone}{email}{website}` | v1 header, kept for existing CVs |
 
+- Entries are rows of a two-column `tabular` (`{ll}`) inside `table[H]`, as in the templates.
 - `items` is a list of `\item …`; leave it empty (`{}`) for an entry without bullets.
 - Leave `end` empty (`{}`) for a single date; the dash is then left out.
 
 ```latex
-\section*{Education}
+\cvheader{John Doe}{Software Engineer}
+  {Zurich, Switzerland \cvsep +41 12 345 67 89 \cvsep \email{john.doe@example.com}}
+  {\weblink{linkedin.com/in/johndoe} \cvsep \weblink{github.com/johndoe}}
+
+\section*{Work Experience}
 \begin{table}[H]
     \begin{tabular}{ll}
-        \dtList{2022}{now}{University of XYZ}{MSc Computer Science}{%
-            \item Major Artificial Intelligence (90), Minor Robotics (30)
+        \dtList{03/2023}{present}{Software Engineer,}{XYZ Web Solutions, Zurich}{%
+            \item Cut page load times by 60\,\% by adding caching
         } \\
-        \dtList{2016}{2018}{University of ABC}{BSc Electrical Engineering}{} \\
     \end{tabular}
 \end{table}
 ```
@@ -133,19 +158,32 @@ All commands go inside a two-column `tabular` (`{ll}`), as in [`template.tex`](t
 
 | What | Where |
 |---|---|
-| Paper and font size | Class options, e.g. `\documentclass[11pt]{cv}`; paper size and margins in the `geometry` line of [`cv.cls`](cv.cls) |
-| Heading style | `\titleformat{\section}` and `\titlespacing{\section}` in [`cv.cls`](cv.cls) |
-| Width of the text column | `p{0.9\linewidth}` in `\dtList` and `\tList` |
-| PDF title and author | `\title{…}` and `\author{…}` in the preamble of your `.tex` file |
+| Style | `\documentclass[academic]{cv}` or `\documentclass[corporate]{cv}` |
+| Font size | Class option, e.g. `\documentclass[corporate, 11pt]{cv}` |
+| Margins | `\geometry{margin=1.2cm}` in the preamble |
+| Accent color | `\definecolor{cvaccent}{RGB}{0, 102, 102}` in the preamble |
+| Date column width (academic) | `\setlength{\cvdatewidth}{2cm}` in the preamble |
+| Skill label width (corporate) | `\setlength{\cvlabelwidth}{3cm}` in the preamble |
+| Heading style | `\titleformat{\section}` in [`cv.cls`](cv.cls) |
+| PDF title and author | `\title{…}` and `\author{…}` in the preamble |
 
-With XeLaTeX or LuaLaTeX the class loads `fontspec` (Latin Modern). Latin Modern has no bold small capitals, so the
-name in the header falls back to bold upright; use pdfLaTeX for the original look.
+## Writing tips
+
+- **Start with a profile:** two sentences on who you are, what you have done and what you are looking for.
+  Recruiters skim a CV in seconds.
+- **Show results, not duties:** "Cut page load times by 60 %" says more than "Responsible for performance".
+- **Use month and year** (03/2023 – present), so gaps and durations are clear.
+- **Name concrete skills** instead of levels like "advanced": tools, years of use, projects.
+- **Keep the order reverse-chronological** and the most relevant section first: work experience for companies,
+  education and research for academia.
+- **Check the text layer:** copy the PDF text into a plain editor; if words or spaces are missing, a parser will
+  miss them too.
 
 ## Build in CI
 
-[`build.yml`](.github/workflows/build.yml) compiles `template.tex` with
-[xu-cheng/latex-action](https://github.com/xu-cheng/latex-action) on every push and pull request and uploads the PDF
-as a workflow artifact. Pushing a tag `v*` also attaches the PDF to a GitHub release.
+[`build.yml`](.github/workflows/build.yml) compiles both templates with
+[xu-cheng/latex-action](https://github.com/xu-cheng/latex-action) on every push and pull request and uploads the PDFs
+as a workflow artifact. Pushing a tag `v*` also attaches them to a GitHub release.
 
 ## License
 

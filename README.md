@@ -26,7 +26,7 @@
 
 > [!NOTE]
 > Created in 2023 and updated in 2026 (v2). v2.1 adds the two styles, the `\cvheader` command, wider margins and
-> machine-readable text. Existing v1 CVs still compile: `\centeredheader` and all entry commands keep their
+> machine-readable text; v2.1.1 gives the same spacing on TeX Live 2023 (e.g. older Overleaf) to 2026. Existing v1 CVs still compile: `\centeredheader` and all entry commands keep their
 > signatures.
 
 ## Contents
@@ -162,6 +162,7 @@ docker run --rm -v "$PWD":/w -w /w texlive/texlive:latest latexmk
 | Font size | Class option, e.g. `\documentclass[corporate, 11pt]{cv}` |
 | Margins | `\geometry{margin=1.2cm}` in the preamble |
 | Accent color | `\definecolor{cvaccent}{RGB}{0, 102, 102}` in the preamble |
+| Space between entries | `\setlength{\cvitemgap}{8pt}` in the preamble |
 | Date column width (academic) | `\setlength{\cvdatewidth}{2cm}` in the preamble |
 | Skill label width (corporate) | `\setlength{\cvlabelwidth}{3cm}` in the preamble |
 | Heading style | `\titleformat{\section}` in [`cv.cls`](cv.cls) |

@@ -15,6 +15,7 @@ Open tasks for the template.
 - [x] Set PDF title and author from `\title` and `\author`
 - [x] v2.1: `academic` and `corporate` styles, `\cvheader` with location and profile links, 1.5 cm margins
 - [x] v2.1: machine-readable text under pdfLaTeX (real spaces, Unicode mappings)
+- [x] v2.1.1: same spacing on TeX Live 2023–2026 (minipages, `\cvitemgap`); `sourcesanspro` fallback for TeX Live 2023
 - [ ] XeLaTeX/LuaLaTeX with Source Sans: parsers lose the word spaces; pdfLaTeX is the recommended engine
 - [ ] Optional: bold small capitals for XeLaTeX/LuaLaTeX (needs a font that has them, e.g. New Computer Modern)
 - [ ] Optional: icons for phone, email and website (e.g. `fontawesome5`)

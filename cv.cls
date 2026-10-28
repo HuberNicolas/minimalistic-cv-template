@@ -30,7 +30,10 @@
   \RequirePackage{fontspec}    % XeLaTeX/LuaLaTeX: Unicode input
 \fi
 \ifcv@corporate
-  \RequirePackage[default]{sourcesans} % Source Sans as the main font
+  % Source Sans as the main font; the package was called sourcesanspro before TeX Live 2024
+  \IfFileExists{sourcesans.sty}
+    {\RequirePackage[default]{sourcesans}}
+    {\RequirePackage[default]{sourcesanspro}}
 \fi
 \RequirePackage{microtype}
 \RequirePackage[a4paper, margin=1.5cm]{geometry} % change with \geometry{margin=...}
@@ -112,15 +115,26 @@
 % Leave the items empty for an entry without bullets, and end empty for a single date.
 \newlength{\cvdatewidth}
 \setlength{\cvdatewidth}{1.8cm} % academic: width of the date column
+% space after each entry; minipages instead of p columns keep it the same on every
+% TeX Live version (p columns ended with an extra blank line before 2024)
+\newlength{\cvitemgap}
+\ifcv@corporate
+  \setlength{\cvitemgap}{\dimexpr\baselineskip+5pt\relax}
+\else
+  \setlength{\cvitemgap}{\baselineskip}
+\fi
 \newlength{\cv@textwidth}
 \AtBeginDocument{\setlength{\cv@textwidth}{\dimexpr\textwidth-\cvdatewidth-4\tabcolsep\relax}}
 
 \ifcv@corporate
   % one cell across both columns; dates right-aligned on the title line
   \newcommand{\cv@entry}[4]{% start, end, title line, items
-    \multicolumn{2}{@{}p{\textwidth}@{}}{%
-      #3\hfill{\small #1\ifblank{#2}{}{ -- #2}}%
-      \ifblank{#4}{}{\cv@items{#4}}\vspace{3pt}}%
+    \multicolumn{2}{@{}l@{}}{%
+      \begin{minipage}[t]{\textwidth}
+        #3\hfill{\small #1\ifblank{#2}{}{ -- #2}}%
+        \ifblank{#4}{}{\cv@items{#4}}%
+        \par\vspace{\cvitemgap}%
+      \end{minipage}}%
   }
 \else
   % date column "start --" over "end", text column to its right
@@ -128,10 +142,11 @@
     \begin{tabular}[t]{@{}p{\cvdatewidth}@{}}
       #1\ifblank{#2}{}{ --} \\ #2
     \end{tabular} &
-    \begin{tabular}[t]{@{}p{\cv@textwidth}@{}}
-      #3 \\
-      \ifblank{#4}{}{\vspace{-\topsep}\cv@items{#4}}
-    \end{tabular}%
+    \begin{minipage}[t]{\cv@textwidth}
+      #3\par
+      \ifblank{#4}{}{\cv@items{#4}}%
+      \par\vspace{\cvitemgap}%
+    \end{minipage}%
   }
 \fi
 \newcommand{\dtList}[5]{\cv@entry{#1}{#2}{\textbf{#3} #4}{#5}}
